@@ -2,6 +2,7 @@ import { ItemsGrid } from "./ItemsGrid";
 
 export default {
     component: ItemsGrid,
+    tags: ['autodocs'],
     args: {
         books: [{
             id: "623de5394aebb40517f35742",

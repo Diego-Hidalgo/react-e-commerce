@@ -6,11 +6,11 @@ export const DisplayedItem = ({id, title, price, image, addToCart, ...props}) =>
   return (
     <Card sx={{ padding: 1, width: 230, height: 370 }} itemID={id} variant="outlined" elevation={5}>
       <CardMedia sx={{height: 180, objectFit: 'contain'}} component="img" image={image} alt={title}/>
-      <CardContent >
-        <Typography gutterBottom variant="subtitle2" component="div" textAlign={'center'}>
+      <CardContent sx={{height: 100}}>
+        <Typography sx={{height: 50}} gutterBottom variant="subtitle2" component="div" textAlign={'center'}>
           {title}
         </Typography>
-        <Typography gutterBottom variant="h5" component="div" textAlign={'center'}>
+        <Typography sx={{height: 50}} gutterBottom variant="h4" component="div" textAlign={'center'}>
           ${price}
         </Typography>
       </CardContent>
@@ -22,5 +22,5 @@ export const DisplayedItem = ({id, title, price, image, addToCart, ...props}) =>
         </Stack>
       </CardActions>
     </Card>
-  )
-}
+  );
+};
