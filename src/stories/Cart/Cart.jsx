@@ -1,11 +1,16 @@
 import { Box, Stack, Grid, Typography, Button } from '@mui/material';
 import React from 'react';
-import { CartItem } from '../../CartItem/CartItem';
+import { CartItem } from '../CartItem/CartItem';
 
 
-const CartHasItems = ({items, onRemoveFromCart, onBuyCart}) => {
+const CartHasItems = ({items, total, onRemoveFromCart, onBuyCart}) => {
   return(
     <Box sx={{ flexGrow: 1, padding: 5 }}>
+      <Stack sx={{  display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <Typography gutterBottom variant="h4" component="div" textAlign='center'>
+          Total: $ {total}
+        </Typography>
+      </Stack>
       <Stack sx={{padding: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
         <Button variant='contained' sx={{width: 600}} color='success' onClick={() => onBuyCart()}>
             Comprar carrito
@@ -30,10 +35,10 @@ const CartIsEmpty = () => {
   );
 };
 
-export const Cart = ({items, onRemoveFromCart, onBuyCart}) => {
+export const Cart = ({items, total, onRemoveFromCart, onBuyCart}) => {
   return(
     <div>
-      {items.length>0? <CartHasItems items={items} onRemoveFromCart={onRemoveFromCart} onBuyCart={onBuyCart}/> : <CartIsEmpty />}
+      {items.length>0? <CartHasItems items={items} total={total} onRemoveFromCart={onRemoveFromCart} onBuyCart={onBuyCart}/> : <CartIsEmpty />}
     </div>
   );
 };

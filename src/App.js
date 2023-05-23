@@ -13,19 +13,19 @@ import { Cart } from './stories/Cart/Cart';
 const booko = [{
   id: "623de5394aebb40517f35742",
   image: "https://images-na.ssl-images-amazon.com/images/I/51hb7s69wrL._SX355_BO1,204,203,200_.jpg",
-  price: 20,
+  price: 20000,
   title: "The Things You Can See Only When You Slow Down"
 },
 {
   id: "623de539a25cd86a11df7197",
   image: "https://images-eu.ssl-images-amazon.com/images/I/41yu2qXhXXL._SY264_BO1,204,203,200_QL40_ML2_.jpg",
-  price: 13,
+  price: 13000,
   title: "Sapiens: A Brief History of Humankind"
 },
 {
   id: "623ab1335faf472s967fbwb2",
   image: "https://images-na.ssl-images-amazon.com/images/I/41RfHWoMEQS._SX308_BO1,204,203,200_.jpg",
-  price: 20,
+  price: 200000,
   title: "Beautiful World, Where Are You"
 }
 ]
@@ -99,6 +99,14 @@ function App() {
     }));
   };
 
+  const calcCartTotal = () => {
+    let total = 0;
+    cart.forEach(item => {
+      total += item.price;
+    })
+    return total;
+  }
+
   const onBuyCart = () => {
     if(!user) {
       alert('Debe estar loggeado para poder comprar el carrito');
@@ -116,7 +124,7 @@ function App() {
           <Route path='/' element={ <ItemsGrid books={booko} onAddToCart={onAddToCart}/> } />
           <Route path='/register' element={ user? < Navigate to='/' /> : <Register onRegister={onRegister}/> } />
           <Route path='/login' element={ user? < Navigate to='/' /> : <Login onLogin={onLogin}/> } />
-          <Route path='/cart' element={ <Cart items={cart} onRemoveFromCart={onRemoveFromCart} onBuyCart={onBuyCart}/> } />
+          <Route path='/cart' element={ <Cart items={cart} total={calcCartTotal()} onRemoveFromCart={onRemoveFromCart} onBuyCart={onBuyCart}/> } />
         </Routes>
       </Router>
     </div>
