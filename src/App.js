@@ -4,6 +4,7 @@ import { Banner } from './stories/Banner/Banner';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ItemsGrid } from './stories/ItemsGrid/ItemsGrid';
 import 'bootstrap/dist/css/bootstrap.css';
+import { Register } from './stories/Register/Register';
 
 const books = [{
   id: "623de5394aebb40517f35742",
@@ -32,7 +33,7 @@ function App() {
         <Banner/>
         <Routes>
           <Route path='/' element={<ItemsGrid books={books}/>} />
-          <Route path='/register' element={<App/>} />
+          <Route path='/register' element={<Register/>} />
           <Route path='/login' element={<App/>} />
         </Routes>
       </Router>
