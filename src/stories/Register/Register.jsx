@@ -14,7 +14,7 @@ export const Register = ({ onRegister }) => {
   return(
     <Box sx={{ flexGrow: 1, padding: 5 }}>
       <Grid sx={{ display: 'flex', justifyContent: 'center', alignItems: 'start' }}>
-        <Card sx={{padding: 5, width: 300, height: 455, border: 1}} variant='outlined' elevation={5}>
+        <Card sx={{padding: 5, width: 300, height: 455, border: 1}} variant='outlined'>
           <CardContent>
               <Typography gutterBottom variant="h5">
                   Registro

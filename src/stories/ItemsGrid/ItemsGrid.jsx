@@ -7,7 +7,7 @@ import { Typography } from '@mui/material';
 const ThereAreNoBooks = ({}) => {
   return(
     <Box sx={{ flexGrow: 1, padding: 5}}>
-      <Typography sx={{height: 50}} gutterBottom variant="subtitle2" component="div" textAlign={'center'}>
+      <Typography sx={{height: 50}} gutterBottom variant="h1" component="div" textAlign={'center'}>
           Aún no hay libros
       </Typography>
     </Box>

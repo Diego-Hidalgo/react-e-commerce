@@ -10,27 +10,8 @@ import {signOut, onAuthStateChanged, createUserWithEmailAndPassword, signInWithE
 import { auth, db } from './config/firebase';
 import { Cart } from './stories/Cart/Cart';
 import { BookDescription } from './stories/BookDescription/BookDescription';
-import { collection, getDocs } from 'firebase/firestore';
-
-const booko = [{
-  id: "623de5394aebb40517f35742",
-  image: "https://images-na.ssl-images-amazon.com/images/I/51hb7s69wrL._SX355_BO1,204,203,200_.jpg",
-  price: 20000,
-  title: "The Things You Can See Only When You Slow Down"
-},
-{
-  id: "623de539a25cd86a11df7197",
-  image: "https://images-eu.ssl-images-amazon.com/images/I/41yu2qXhXXL._SY264_BO1,204,203,200_QL40_ML2_.jpg",
-  price: 13000,
-  title: "Sapiens: A Brief History of Humankind"
-},
-{
-  id: "623ab1335faf472s967fbwb2",
-  image: "https://images-na.ssl-images-amazon.com/images/I/41RfHWoMEQS._SX308_BO1,204,203,200_.jpg",
-  price: 200000,
-  title: "Beautiful World, Where Are You"
-}
-]
+import { addDoc, collection, deleteDoc, doc, getDocs } from 'firebase/firestore';
+import { Account } from './stories/Account/Account';
 
 function App() {
 
@@ -39,6 +20,8 @@ function App() {
   const [books, setBooks] = useState([]);
 
   const booksCollectionRef = collection(db, 'books');
+
+  const usersCollectionRef = collection(db, 'users');
 
   const getBooks = async () => {
     try {
@@ -53,13 +36,10 @@ function App() {
     }
   };
 
-  getBooks();
-
   const [selectedBook, setSelectedBook] = useState(null);
 
   const checkForUser = () => {
     onAuthStateChanged(auth, (user) => {
-      
       if (!user) setUser(null);
       if (user) setUser(user);
     });
@@ -67,6 +47,10 @@ function App() {
 
   useEffect(() => {
     checkForUser();
+  }, []);
+
+  useEffect(() => {
+    getBooks();
   }, []);
 
   const [cart, setCart] = useState([]);
@@ -81,17 +65,24 @@ function App() {
     );
   };
 
-  const onAddBook = (book) => {
-    setBooks([
-      ...books,
-      book
-    ]);
+  const onAddBook = async (book) => {
+    try {
+      const {res} = await addDoc(booksCollectionRef, {...book});
+      alert("Se ha agregado el libro");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
-  const onRegister = (user) => {
+  const onDeleteBook = async (books) => {
+    for(var i = 0; i < books.length; i ++)
+      await deleteDoc(doc(db, 'books', books[i]));
+  };
+
+  const onRegister = async (user) => {
     try {
-      const { res } = createUserWithEmailAndPassword(auth, user.email, user.password);
-      onLogin(res);
+      const { res } = await createUserWithEmailAndPassword(auth, user.email, user.password);
+      if(res) await addDoc(usersCollectionRef, {userId: res.uid, name: user.name, type: false});
     } catch (error) {
       console.log(error.message);
     }
@@ -100,7 +91,12 @@ function App() {
   const onLogin = (user) => {
     try {
       const { res } = signInWithEmailAndPassword(auth, user.email, user.password);
-      setUser(res);
+      if(res) {
+        setUser({
+          id: res.uid,
+          email: res.email
+        });
+      }
     } catch (error) {
       console.log(error.message);
     }
@@ -116,7 +112,7 @@ function App() {
 
   const onRemoveFromCart = (id) => {
     setCart(cart.filter(i => {
-      return i.id != id;
+      return i.id !== id;
     }));
   };
 
@@ -151,6 +147,7 @@ function App() {
           <Route path='/login' element={ user? < Navigate to='/' /> : <Login onLogin={onLogin}/> } />
           <Route path='/cart' element={ <Cart items={cart} total={calcCartTotal()} onRemoveFromCart={onRemoveFromCart} onBuyCart={onBuyCart}/> } />
           <Route path='/book/:id' element= { <BookDescription book={selectedBook} /> } />
+          <Route path='/account' element={ user? <Account username={user.email} onRegisterBook={onAddBook} onDeleteBooks={onDeleteBook} books={books}/> : <Navigate to='/' /> } />
         </Routes>
       </Router>
     </div>
