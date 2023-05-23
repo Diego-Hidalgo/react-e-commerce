@@ -17,9 +17,9 @@ export const DisplayedItem = ({book, onAddToCart, onSelectedBook, ...props}) => 
           ${book.price}
         </Typography>
       </CardContent>
-      <CardActions>
+      <CardActions sx={{padding:2}}>
         <Stack alignContent={'center'} direction={'row'}>
-          <Button sx={{height: 50}} onClick={() => onAddToCart(book)} variant="contained" endIcon={<ShoppingCartIcon />}>
+          <Button sx={{height: 30, padding: 3, fontSize: 12}} onClick={() => onAddToCart(book)} variant="contained" endIcon={<ShoppingCartIcon />}>
             Agregar al carrito
           </Button>
         </Stack>
