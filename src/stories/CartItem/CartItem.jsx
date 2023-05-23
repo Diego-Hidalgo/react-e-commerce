@@ -10,12 +10,12 @@ export const CartItem = ({index, item, onRemoveFromCart}) => {
         </CardContent>
         <CardMedia sx={{height: 180, objectFit: 'contain'}} component="img" image={item.image} alt={item.title}/>
         <CardContent>
-          <Typography gutterBottom variant="h6" component="div" textAlign='center'>
-              {item.title}
+          <Typography gutterBottom variant="subtitle1" component="div" textAlign='center'>
+              {item.name}
             </Typography>
         </CardContent>
         <CardContent>
-          <Typography sx={{height: 50}} gutterBottom variant="h4" component="div" textAlign='center'>
+          <Typography sx={{height: 50}} gutterBottom variant="h5" component="div" textAlign='center'>
             ${item.price}
           </Typography>
         </CardContent>

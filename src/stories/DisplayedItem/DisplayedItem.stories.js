@@ -5,7 +5,7 @@ export default {
     tags: ['autodocs'],
     args: {
         image: "https://images-na.ssl-images-amazon.com/images/I/51hb7s69wrL._SX355_BO1,204,203,200_.jpg",
-        title: "Soy un libro",
+        name: "Soy un libro",
         price: 10000,
     },
 };

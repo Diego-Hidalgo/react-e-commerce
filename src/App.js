@@ -7,8 +7,10 @@ import { Register } from './stories/Register/Register';
 import { Login } from './stories/Login/Login';
 import { useEffect, useState } from 'react';
 import {signOut, onAuthStateChanged, createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from './config/firebase';
+import { auth, db } from './config/firebase';
 import { Cart } from './stories/Cart/Cart';
+import { BookDescription } from './stories/BookDescription/BookDescription';
+import { collection, getDocs } from 'firebase/firestore';
 
 const booko = [{
   id: "623de5394aebb40517f35742",
@@ -34,6 +36,27 @@ function App() {
 
   const [user, setUser] = useState(null);
 
+  const [books, setBooks] = useState([]);
+
+  const booksCollectionRef = collection(db, 'books');
+
+  const getBooks = async () => {
+    try {
+      const data = await getDocs(booksCollectionRef);
+      const formattedData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id
+      }));
+      setBooks(formattedData);
+    } catch(error) {
+      console.error(error);
+    }
+  };
+
+  getBooks();
+
+  const [selectedBook, setSelectedBook] = useState(null);
+
   const checkForUser = () => {
     onAuthStateChanged(auth, (user) => {
       
@@ -47,8 +70,6 @@ function App() {
   }, []);
 
   const [cart, setCart] = useState([]);
-
-  const [books, setBooks] = useState([]);
 
   const onAddToCart = (book) => {
     if(cart.some(i => i.id === book.id))
@@ -102,7 +123,7 @@ function App() {
   const calcCartTotal = () => {
     let total = 0;
     cart.forEach(item => {
-      total += item.price;
+      total += parseInt(item.price);
     })
     return total;
   }
@@ -116,15 +137,20 @@ function App() {
     }
   };
 
+  const onSelectedBook = (book) => {
+    setSelectedBook(book);
+  }
+
   return (
     <div className="App">
       <Router>
         <Banner user={user} onLogOut={onLogOut} cartLength={cart.length}/>
         <Routes>
-          <Route path='/' element={ <ItemsGrid books={booko} onAddToCart={onAddToCart}/> } />
+          <Route path='/' element={ <ItemsGrid books={books} onAddToCart={onAddToCart} onSelectedBook={onSelectedBook}/> } />
           <Route path='/register' element={ user? < Navigate to='/' /> : <Register onRegister={onRegister}/> } />
           <Route path='/login' element={ user? < Navigate to='/' /> : <Login onLogin={onLogin}/> } />
           <Route path='/cart' element={ <Cart items={cart} total={calcCartTotal()} onRemoveFromCart={onRemoveFromCart} onBuyCart={onBuyCart}/> } />
+          <Route path='/book/:id' element= { <BookDescription book={selectedBook} /> } />
         </Routes>
       </Router>
     </div>
