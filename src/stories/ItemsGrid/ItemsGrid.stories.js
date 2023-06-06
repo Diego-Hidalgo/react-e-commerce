@@ -1,8 +1,20 @@
 import { ItemsGrid } from "./ItemsGrid";
 
 export default {
+    title: 'Items Container',
     component: ItemsGrid,
     tags: ['autodocs'],
+};
+
+export const Empty = {
+    args: {
+        books: [],
+        onAddToCart: () => {console.log("nada")},
+        onSelectedBook: () => {console.log("seleccionado")}
+    }
+}
+
+export const SomeItems = {
     args: {
         books: [{
             id: "623de5394aebb40517f35742",
@@ -23,9 +35,7 @@ export default {
             name: "Beautiful World, Where Are You"
         }
         ],
+        onAddToCart: () => {console.log('agregado')},
+        onSelectedBook: () => {console.log('seleccionado')}
     },
-};
-
-export const Empty = {
-
 }
